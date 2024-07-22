@@ -8,14 +8,14 @@ using System.Threading.Tasks;
 
 namespace PersonManagment.Infrustructure.Persistence
 {
-    internal class PersonManagmentDbContext : DbContext
+    public class PersonManagmentDbContext : DbContext
     {
         public PersonManagmentDbContext(DbContextOptions<PersonManagmentDbContext> options): base(options)
         {
             
         }
-        internal DbSet<Person> Persons { get; set; }
-        internal DbSet<Account> Accounts { get; set; }
-        internal DbSet<Transaction> Transactions { get; set; }        
+        public DbSet<Person> Persons { get; set; }
+        public DbSet<Account> Accounts { get; set; }
+        public DbSet<Transaction> Transactions { get; set; }        
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using PersonManagment.Domain.Validations;
+using System.ComponentModel.DataAnnotations;
 
 namespace PersonManagment.Domain.Entities
 {
@@ -11,11 +12,11 @@ namespace PersonManagment.Domain.Entities
         public Account? Account { get; set; }        
 
         [Required]
-        //[Transaction_EnsureAmountNotZero]
+        [Transaction_EnsureAmountNotZero]
         public decimal Amount { get; set; }
 
         [Required]
-        //[Transaction_EnsureNotFutureDate]
+        [Transaction_EnsureNotFutureDate]
         public DateTime TransactionDate { get; set; }       
     }
 }
