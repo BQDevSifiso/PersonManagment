@@ -21,7 +21,7 @@ namespace PersonManagment.API.Controllers
         {
             if (Authenticator.Authenticate(credential.ClientId, credential.Secret))
             {
-                var expiresAt = DateTime.UtcNow.AddMinutes(10);
+                var expiresAt = DateTime.UtcNow.AddMinutes(1000);
                 return Ok(new
                 {
                     access_token = Authenticator.CreateToken(credential.ClientId, expiresAt,_configuration.GetValue<string>("SecretKey")),
