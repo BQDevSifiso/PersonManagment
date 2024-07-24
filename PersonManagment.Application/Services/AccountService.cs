@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using PersonManagment.Domain.Entities;
@@ -28,6 +29,7 @@ namespace PersonManagment.Application.Services
 
         public async Task<Account> CreateAccountAsync(Account account)
         {
+            account.AccountNumber = GenerateSecureSixDigitNumber().ToString();
             account.CreatedDate = DateTime.UtcNow;
             return await _accountRepository.AddAsync(account);
         }
@@ -99,6 +101,17 @@ namespace PersonManagment.Application.Services
                 isUpdate = true;
             }
             return isUpdate;
+        }
+
+        private int GenerateSecureSixDigitNumber()
+        {
+            using (RandomNumberGenerator rng = RandomNumberGenerator.Create())
+            {
+                byte[] bytes = new byte[4];
+                rng.GetBytes(bytes);
+                int randomValue = BitConverter.ToInt32(bytes, 0) & int.MaxValue;
+                return 100000 + (randomValue % 900000);
+            }
         }
     }
 }

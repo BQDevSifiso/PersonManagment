@@ -6,9 +6,7 @@ namespace PersonManagment.Domain.Entities
     {
         public int AccountId { get; set; }
 
-        [Required]
-        [MaxLength(20)]
-        public string AccountNumber { get; set; }
+        public string? AccountNumber { get; set; }
 
         [Required]
         public int PersonId { get; set; } = 0;
