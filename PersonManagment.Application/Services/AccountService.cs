@@ -28,6 +28,7 @@ namespace PersonManagment.Application.Services
 
         public async Task<Account> CreateAccountAsync(Account account)
         {
+            account.CreatedDate = DateTime.UtcNow;
             return await _accountRepository.AddAsync(account);
         }
 
@@ -52,6 +53,7 @@ namespace PersonManagment.Application.Services
                 {
                     isClosed = true;
                     account.IsClosed = true;
+                    account.ClosedDate = DateTime.UtcNow;
                     await _accountRepository.UpdateAsync(account);
                 }
                 else

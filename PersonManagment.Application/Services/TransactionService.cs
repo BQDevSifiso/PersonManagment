@@ -29,6 +29,7 @@ namespace PersonManagment.Application.Services
 
         public async Task<Transaction> CreateTransactionAsync(Transaction transaction)
         {
+            transaction.TransactionDate = DateTime.UtcNow;
             return await _transactionRepository.AddAsync(transaction);
         }
 
