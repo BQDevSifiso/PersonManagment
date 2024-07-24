@@ -20,7 +20,7 @@ namespace TVA.Infrastructure.Repositories
 
         public async Task<Account> GetAccountByAccountId(int accountId)
         {
-            var account = await _dbContext.Accounts.AsNoTracking().Where(a => a.AccountId == accountId).FirstOrDefaultAsync();
+            var account = await _dbContext.Accounts.Include(t=> t.Transactions).AsNoTracking().Where(a => a.AccountId == accountId).FirstOrDefaultAsync();
             return account;
         }
 

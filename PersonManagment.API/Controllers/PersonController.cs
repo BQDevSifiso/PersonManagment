@@ -13,11 +13,13 @@ namespace PersonManagment.API.Controllers
     public class PersonController: ControllerBase
     {
         private readonly PersonService _personService;
+        private readonly ISearchPerson _searchPerson;
         private readonly ISearchPersonAccounts _personAccounts;
-        public PersonController(PersonService personService, ISearchPersonAccounts personAccounts)
+        public PersonController(PersonService personService, ISearchPersonAccounts personAccounts, ISearchPerson searchPerson)
         {
             _personService = personService;
             _personAccounts = personAccounts;
+            _searchPerson = searchPerson;
         }
 
         [HttpGet]
@@ -29,7 +31,7 @@ namespace PersonManagment.API.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Person>> GetPerson(int id)
         {
-            var person = await _personService.GetPersonByIdAsync(id);
+            var person = await _searchPerson.FindPersonByPersonId(id);
             if (person == null)
             {
                 return NotFound();
@@ -63,6 +65,13 @@ namespace PersonManagment.API.Controllers
         {
             await _personService.DeletePersonAsync(id);
             return NoContent();
+        }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetPersonAccounts(int id)
+        {
+            var personAccount = await _personAccounts.GetPersonAccountsByPersonId(id);
+            return Ok(personAccount);
         }
 
         [HttpGet("{filterString}")]

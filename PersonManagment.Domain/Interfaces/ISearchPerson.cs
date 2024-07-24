@@ -10,5 +10,6 @@ namespace PersonManagment.Domain.Interfaces
     public interface ISearchPerson
     {
         Task<Person> FindPersonByIDNumber(string idNumber);
+        Task<Person> FindPersonByPersonId(int personId);
     }
 }

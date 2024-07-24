@@ -10,5 +10,6 @@ namespace PersonManagment.Domain.Interfaces
     public interface ISearchTransaction
     {
         Task<Transaction> GetTransactionById(int transactionId);
+        Task<List<Transaction>> GetTransactionsByAccoutId(int accountId);
     }
 }

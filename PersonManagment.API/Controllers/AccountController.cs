@@ -2,18 +2,23 @@
 using PersonManagment.API.Filters.ActionFilters;
 using PersonManagment.Application.Services;
 using PersonManagment.Domain.Entities;
+using PersonManagment.Domain.Interfaces;
 
 namespace PersonManagment.API.Controllers
 {
     [ApiController]
     [Route("api/[controller]/[action]")]
-    public class AccountController: ControllerBase
+    public class AccountController : ControllerBase
     {
         private readonly AccountService _accountService;
+        private readonly ISearchTransaction _searchTransaction;
+        private readonly ISearchAccount _searchAccount;
 
-        public AccountController(AccountService accountService)
+        public AccountController(AccountService accountService, ISearchTransaction searchTransaction, ISearchAccount searchAccount)
         {
             _accountService = accountService;
+            _searchTransaction = searchTransaction;
+            _searchAccount = searchAccount;
         }
 
         // GET: api/Account
@@ -25,9 +30,10 @@ namespace PersonManagment.API.Controllers
 
         // GET: api/Account/5
         [HttpGet("{id}")]
+        [TypeFilter(typeof(Account_ValidateAccountExistsFilterAttribute))]
         public async Task<ActionResult<Account>> GetAccount(int id)
         {
-            var account = await _accountService.GetAccountByIdAsync(id);
+            var account = await _searchAccount.GetAccountByAccountId(id);
             if (account == null)
             {
                 return NotFound();
@@ -46,6 +52,7 @@ namespace PersonManagment.API.Controllers
 
         // PUT: api/Account/5
         [HttpPut("{id}")]
+        [TypeFilter(typeof(Account_ValidateAccountExistsFilterAttribute))]
         [TypeFilter(typeof(Account_ValidateAccountBalanceUnchangedFilterAttribute))]
         public async Task<IActionResult> UpdateAccount(int id, Account account)
         {
@@ -58,19 +65,39 @@ namespace PersonManagment.API.Controllers
 
             return NoContent();
         }
-        [HttpPut("{accountId}")]
-        public async Task<IActionResult> CloseAccount(int accountId)
+        [HttpPut("{id}")]
+        [TypeFilter(typeof(Account_ValidateAccountExistsFilterAttribute))]
+        public async Task<IActionResult> CloseAccount(int id)
         {
-            var isClosed = await _accountService.CloseAccount(accountId);
-            return NoContent();
+            var isClosed = await _accountService.CloseAccount(id);
+
+            if (isClosed == false)
+            {
+                ModelState.AddModelError("Invalid", "Accounts cannot be closed if the balance is not zero");
+                var problemDetails = new ValidationProblemDetails(ModelState)
+                {
+                    Status = StatusCodes.Status400BadRequest
+                };
+                return new UnauthorizedObjectResult(problemDetails);
+            }
+            return Ok(isClosed);
         }
 
         // DELETE: api/Account/5
         [HttpDelete("{id}")]
+        [TypeFilter(typeof(Account_ValidateAccountExistsFilterAttribute))]
         public async Task<IActionResult> DeleteAccount(int id)
         {
             await _accountService.DeleteAccountAsync(id);
             return NoContent();
+        }
+
+        [HttpGet("{id}")]
+        [TypeFilter(typeof(Account_ValidateAccountExistsFilterAttribute))]
+        public async Task<IActionResult> GetAccountTransactions(int id)
+        {
+            var trasactions = await _searchTransaction.GetTransactionsByAccoutId(id);
+            return Ok(trasactions);
         }
     }
 }

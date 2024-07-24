@@ -20,7 +20,13 @@ namespace TVA.Infrastructure.Repositories
         }
         public async Task<Person> FindPersonByIDNumber(string idNumber)
         {
-            var person = await _context.Persons.Where(p => p.IDNumber == idNumber).FirstOrDefaultAsync();
+            var person = await _context.Persons.Include(a=> a.Accounts).AsNoTracking().Where(p => p.IDNumber == idNumber).FirstOrDefaultAsync();
+            return person;
+        }
+
+        public async Task<Person> FindPersonByPersonId(int personId)
+        {
+            var person = await _context.Persons.Include(a => a.Accounts).AsNoTracking().Where(p => p.PersonId == personId).FirstOrDefaultAsync();
             return person;
         }
     }

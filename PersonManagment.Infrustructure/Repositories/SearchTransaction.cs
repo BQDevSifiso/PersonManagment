@@ -12,6 +12,13 @@ namespace TVA.Infrastructure.Repositories
         {
             _dbContext = dbContext;
         }
+
+        public async Task<List<Transaction>> GetTransactionsByAccoutId(int accountId)
+        {
+            var transaction = await _dbContext.Transactions.AsNoTracking().Where(t=> t.AccountId == accountId).ToListAsync();
+            return transaction;
+        }
+
         public async Task<Transaction> GetTransactionById(int transactionId)
         {
             var transaction = await _dbContext.Transactions.AsNoTracking().Where(t=> t.TransactionId == transactionId).FirstOrDefaultAsync();
