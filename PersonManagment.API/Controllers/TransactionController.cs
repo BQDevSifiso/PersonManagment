@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PersonManagment.API.Filters.ActionFilters;
+using PersonManagment.API.Filters.AuthFilters;
 using PersonManagment.Application.Services;
 using PersonManagment.Domain.Entities;
 
@@ -7,6 +8,7 @@ namespace PersonManagment.API.Controllers
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
+    [JwtTokenAuthFilter]
     public class TransactionController: ControllerBase
     {
         private readonly TransactionService _transactionService;

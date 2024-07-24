@@ -9,7 +9,7 @@ namespace PersonManagment.API.Controllers
 {
     [ApiController]
     [Route("api/[controller]/[action]")]
-    //[JwtTokenAuthFilterAttribute]
+    [JwtTokenAuthFilter]
     public class PersonController: ControllerBase
     {
         private readonly PersonService _personService;
