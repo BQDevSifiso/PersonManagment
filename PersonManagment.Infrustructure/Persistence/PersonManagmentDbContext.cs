@@ -1,14 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using PersonManagment.Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PersonManagment.Infrustructure.Persistence
 {
-    public class PersonManagmentDbContext : DbContext
+    public class PersonManagmentDbContext : IdentityDbContext
     {
         public PersonManagmentDbContext(DbContextOptions<PersonManagmentDbContext> options): base(options)
         {
@@ -16,6 +12,6 @@ namespace PersonManagment.Infrustructure.Persistence
         }
         public DbSet<Person> Persons { get; set; }
         public DbSet<Account> Accounts { get; set; }
-        public DbSet<Transaction> Transactions { get; set; }        
+        public DbSet<Transaction> Transactions { get; set; }      
     }
 }

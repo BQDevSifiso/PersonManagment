@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PersonManagment.Infrustructure.Persistence;
 
@@ -11,9 +12,11 @@ using PersonManagment.Infrustructure.Persistence;
 namespace PersonManagment.Infrustructure.Migrations
 {
     [DbContext(typeof(PersonManagmentDbContext))]
-    partial class PersonManagmentDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240725143213_confige")]
+    partial class confige
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
